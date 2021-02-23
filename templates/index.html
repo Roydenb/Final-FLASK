@@ -1,24 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WELCOME</title>
-</head>
-<body>
+<html>
+   <body>
 
-<form action="/add-new-user/">
-    <h3>User information</h3>
-    Name<br>
-    <input type="text" name="name"><br>
-    Surname<br>
-    <input name="surname"><br>
-   Email<br>
-    <input type="text" name="email"><br>
-  Contact number<br>
-    <input type="text" name="contact"><br>
-  <br>
-    <input type="submit" value="submit"><br>
-</form>
+      <form action = "{{ url_for('adduser') }}" method = "POST">
+         <h3><strong>ADD A NEW USER</strong></h3>
+         Name<br>
+         <input type = "text" name = "name" /></br>
 
-</body>
+         Surname<br>
+         <input type="text" name = "surname" ><br>
+
+         Email address<br>
+         <input type = "text" name = "email" /><br>
+
+         Mobile number<br>
+         <input type = "text" name = "contact" /><br>
+         <input type = "submit" value = "submit" /><br>
+      </form>
+
+   </body>
 </html>
