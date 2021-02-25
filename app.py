@@ -12,118 +12,141 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-# @app.route('/')
-# def newuser():
-#     return render_template('index.html')
-
 def dbase_tables():
     conn = sql.connect('database.db')
     print ("Opened database successfully")
 
-    conn.execute('CREATE TABLE Users (name TEXT, surname TEXT, email TEXT, contact TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Users (name TEXT, surname TEXT, email TEXT, contact TEXT)')
     print ("Table created successfully")
-    conn.execute('CREATE TABLE Admin (admin_name TEXT, admin_surname TEXT, admin_email TEXT, admin_password TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Admin (adm_name TEXT, adm_surname TEXT, adm_email TEXT, adm_pass TEXT)')
     print ("Table created successfully")
-    conn.execute('CREATE TABLE items (full-kit TEXT, machines TEXT, needles TEXT, generators TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Items (full_kit TEXT, machines TEXT, needles TEXT, generators TEXT)')
     print ("Table created successfully")
 
     conn.close()
 
 # FOR USER
-# @app.route('/adduser/', methods=['POST', 'GET'])
-# def adduser():
-#     if request.method == 'POST':
-#         try:
-#             nm = request.form['name']
-#             surname = request.form['surname']
-#             mail = request.form['email']
-#             num = request.form['contact']
-#
-#             with sql.connect("database.db") as con:
-#                 cur = con.cursor()
-#                 cur.execute("INSERT INTO Users (name,surname,email,contact) VALUES (?,?,?,?)", (nm, surname, mail, num))
-#                 con.commit()
-#                 msg = "Record successfully added"
-#         except:
-#                 con.rollback()
-#                 msg = "error in insert operation"
-#
-#         finally:
-#                 return render_template("success.html", msg=msg)
-#                 con.close()
-#
-# @app.route('/list')
-# def list():
-#     con = sql.connect("database.db")
-#     con.row_factory = sql.Row
-#
-#     cur = con.cursor()
-#     cur.execute("select * from Users")
-#
-#     list= []
-#     try:
-#         with sql.connect('database.db') as connect:
-#             connect.row_factory = dict_factory
-#             cursor = connect.cursor()
-#             cursor.execute("SELECT * FROM Users")
-#             list = cursor.fetchall()
-#     except Exception as e:
-#             connect.rollback()
-#             print("There was an error fetching results from the database: " + str(e))
-#     finally:
-#         connect.close()
-#         return jsonify(list)
-
-# ************************************************************************************************************************************************************
-# THIS WILL BE THE ADMIN SECTION
-@app.route('/')
-def newadmin():
-    return render_template('admin.html')
-
-# ADMIN
-@app.route('/addadmin/', methods=['POST', 'GET'])
-def addadmin():
+@app.route('/adduser/' , methods=['POST','GET'])
+def adduser():
     if request.method == 'POST':
         try:
-            a_nm = request.form['admin-name']
-            a_surname = request.form['admin-surname']
-            a_mail = request.form['admin-email']
-            admin_pass = request.form['admin-password']
+            nm = request.form['name']
+            surname = request.form['surname']
+            mail = request.form['email']
+            num = request.form['contact']
 
             with sql.connect("database.db") as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Admin (admin-name,admin-surname,admin-email,admin-password) VALUES (?,?,?,?)", (a_nm, a_surname, a_mail, admin_pass))
+                cur.execute("INSERT INTO Users (name,surname,email,contact) VALUES (?,?,?,?)", (nm, surname, mail, num))
                 con.commit()
                 msg = "Record successfully added"
+                return jsonify(msg)
+
         except:
                 con.rollback()
                 msg = "error in insert operation"
+                return jsonify(msg)
 
         finally:
-                return render_template("admin-success.html", msg=msg)
                 con.close()
 
-@app.route('/admin-list')
-def ad_list():
+    if request.method == 'POST':
+        try:
+            nm = request.form['name']
+            surname = request.form['surname']
+            mail = request.form['email']
+            num = request.form['contact']
+
+            with sql.connect("database.db") as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO Users (name,surname,email,contact) VALUES (?,?,?,?)", (nm, surname, mail, num))
+                con.commit()
+                msg = "Record successfully added"
+                return jsonify(msg)
+
+        except:
+                con.rollback()
+                msg = "error in insert operation"
+                return jsonify(msg)
+
+        finally:
+                con.close()
+
+
+
+
+@app.route('/list')
+def list():
     con = sql.connect("database.db")
     con.row_factory = sql.Row
 
     cur = con.cursor()
-    cur.execute("select * from Users")
+    cur.execute("Select * from Users")
 
-    admin_list= []
+    list= []
     try:
         with sql.connect('database.db') as connect:
             connect.row_factory = dict_factory
             cursor = connect.cursor()
-            cursor.execute("SELECT * FROM Admin")
-            admin_list = cursor.fetchall()
+            cursor.execute("SELECT * FROM Users")
+            list = cursor.fetchall()
     except Exception as e:
             connect.rollback()
             print("There was an error fetching results from the database: " + str(e))
     finally:
         connect.close()
-        return jsonify(admin_list)
+        return jsonify(list)
+
+# ************************************************************************************************************************************************************
+# THIS WILL BE THE ADMIN SECTION
+
+# ADMIN
+@app.route('/addadmin/' , methods=['POST','GET'])
+def addadmin():
+    if request.method == 'POST':
+        try:
+            ad_nm = request.form['adm_name']
+            ad_surname = request.form['adm_surname']
+            ad_mail = request.form['adm_email']
+            ad_pass = request.form['adm_pass']
+
+            with sql.connect("database.db") as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO Admin (adm_name,adm_surname,adm_email,adm_pass) VALUES (?,?,?,?)", (ad_nm, ad_surname, ad_mail, ad_pass))
+                con.commit()
+                msg = "Record successfully added"
+                return jsonify(msg)
+
+        except:
+                con.rollback()
+                msg = "error in insert operation"
+                return jsonify(msg)
+
+        finally:
+                con.close()
+
+
+
+@app.route('/adminlist')
+def adminlist():
+    con = sql.connect("database.db")
+
+    cur = con.cursor()
+    cur.execute("Select * from Admin")
+
+    ad_list= []
+    try:
+        with sql.connect('database.db') as connect:
+            connect.row_factory = dict_factory
+            cursor = connect.cursor()
+            cursor.execute("SELECT * FROM Admin")
+            ad_list = cursor.fetchall()
+    except Exception as e:
+            connect.rollback()
+            print("There was an error fetching results from the database: " + str(e))
+    finally:
+        connect.close()
+        return jsonify(ad_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
