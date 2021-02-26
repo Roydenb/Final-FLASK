@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, request,jsonify,redirect,url_for
 import sqlite3 as sql
 from flask_cors import CORS
 
@@ -26,6 +26,28 @@ def dbase_tables():
     conn.close()
 
 # FOR USER
+# Route for handling the login page logic for user
+@app.route('/userlogin' , methods=['POST','GET'])
+def adminlogin():
+    rqst_email = request.form[''] != ''
+    rqst_mobile=request.form[''] != ''
+
+    # success = None
+    if request.method == 'GET':
+            try:
+                with sql.connect('database.db') as connect:
+                    connect.row_factory = dict_factory
+                    cursor = connect.cursor()
+                    cursor.execute("SELECT FROM User WHERE adm_mail = '' AND adm_pass = '' "),()
+
+            except Exception as e:
+                    connect.rollback()
+                    print("There was a problem login in ")
+
+            else:
+                return redirect(url_for('file:///home/user/Desktop/FLASK_APP_front/user_login.html'))
+                # return jsonify(success)
+
 @app.route('/adduser/' , methods=['POST','GET'])
 def adduser():
     if request.method == 'POST':
@@ -49,31 +71,6 @@ def adduser():
 
         finally:
                 con.close()
-
-    if request.method == 'POST':
-        try:
-            nm = request.form['name']
-            surname = request.form['surname']
-            mail = request.form['email']
-            num = request.form['contact']
-
-            with sql.connect("database.db") as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO Users (name,surname,email,contact) VALUES (?,?,?,?)", (nm, surname, mail, num))
-                con.commit()
-                msg = "Record successfully added"
-                return jsonify(msg)
-
-        except:
-                con.rollback()
-                msg = "error in insert operation"
-                return jsonify(msg)
-
-        finally:
-                con.close()
-
-
-
 
 @app.route('/list')
 def list():
@@ -105,6 +102,7 @@ def list():
 def addadmin():
     if request.method == 'POST':
         try:
+            # post_data = request.get_json()
             ad_nm = request.form['adm_name']
             ad_surname = request.form['adm_surname']
             ad_mail = request.form['adm_email']
@@ -125,6 +123,27 @@ def addadmin():
         finally:
                 con.close()
 
+# Route for handling the login page logic for admin
+@app.route('/adminlogin' , methods=['POST','GET'])
+def adminlogin():
+    rqst_email = request.form['adm_mail'] != 'roy@gmail.com'
+    rqst_pass=request.form['adm_pass'] != 'password'
+
+    # success = None
+    if request.method == 'GET':
+            try:
+                with sql.connect('database.db') as connect:
+                    connect.row_factory = dict_factory
+                    cursor = connect.cursor()
+                    cursor.execute("SELECT FROM Admin WHERE adm_mail = 'roy@gmail.com' AND adm_pass = 'password' "),(rqst_email,rqst_pass)
+
+            except Exception as e:
+                    connect.rollback()
+                    print("There was a problem login in ")
+
+            else:
+                return redirect(url_for('file:///home/user/Desktop/FLASK_APP_front/admin_login.html'))
+                # return jsonify(success)
 
 
 @app.route('/adminlist')
@@ -135,6 +154,7 @@ def adminlist():
     cur.execute("Select * from Admin")
 
     ad_list= []
+
     try:
         with sql.connect('database.db') as connect:
             connect.row_factory = dict_factory
