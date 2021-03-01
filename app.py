@@ -123,29 +123,6 @@ def addadmin():
         finally:
                 con.close()
 
-# Route for handling the login page logic for admin
-@app.route('/adminlogin' , methods=['POST','GET'])
-def adminlogin():
-    rqst_email = request.form['adm_mail'] != 'roy@gmail.com'
-    rqst_pass=request.form['adm_pass'] != 'password'
-
-    # success = None
-    if request.method == 'GET':
-            try:
-                with sql.connect('database.db') as connect:
-                    connect.row_factory = dict_factory
-                    cursor = connect.cursor()
-                    cursor.execute("SELECT FROM Admin WHERE adm_mail = 'roy@gmail.com' AND adm_pass = 'password' "),(rqst_email,rqst_pass)
-
-            except Exception as e:
-                    connect.rollback()
-                    print("There was a problem login in ")
-
-            else:
-                return redirect(url_for('file:///home/user/Desktop/FLASK_APP_front/admin_login.html'))
-                # return jsonify(success)
-
-
 @app.route('/adminlist')
 def adminlist():
     con = sql.connect("database.db")
