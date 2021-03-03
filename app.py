@@ -34,7 +34,7 @@ def dbase_tables():
     print ("Table created successfully")
 
     conn.close()
-
+#########################################################################################################################################################
 # FOR USER
 # Route for handling the login page logic for user
 @app.route('/userlogin' , methods=['POST','GET'])
@@ -133,6 +133,29 @@ def addadmin():
         finally:
                 con.close()
 
+@app.route('/adlogin' , methods=['POST','GET'])
+def ad_login():
+    if request.method == 'GET':
+        try:
+            # post_data = request.get_json()
+            ad_mail = request.form['adm_email']
+            ad_pass = request.form['adm_pass']
+
+            with sql.connect("database.db") as con:
+                cur = con.cursor()
+                cur.execute("SELECT * from Admin WHERE adm_email = ? AND adm_pass = ?", (ad_mail, ad_pass))
+                con.commit()
+                msg = "Admin successfully logged in"
+                return jsonify(msg)
+
+        except:
+                con.rollback()
+                msg = "There was a problem logging into your account."
+                return jsonify(msg)
+
+        finally:
+                con.close()
+
 # ADMINS ABILITY TO VIEW THE ADMINS THAT THEY REGISTERED.
 @app.route('/adminlist')
 def adminlist():
@@ -207,133 +230,135 @@ def adminlist():
 
 ##########################################################################################################################################################
 # NEW ITEM FUNCTION
-@app.route('/itemvalues')
-def itemvalues():
-    con = sql.connect("database.db")
-    con.row_factory = sql.Row
+# @app.route('/itemvalues')
+# def itemvalues():
+#     con = sql.connect("database.db")
+#     con.row_factory = sql.Row
+#
+#     cur = con.cursor()
+#     cur.execute("INSERT INTO Product (id,name, code, image, price) VALUES(
+#                 '1, Full Tattoo Kit, KITSET1, product-images/bag.jpg, R12000.00),
+#                 '2, Tattoo Needles, NEEDLE2, product-images/bag.jpg, R12000.00),
+#                 '3, Generators, GEN3, product-images/bag.jpg, R12000.00),
+#                 '4, Ink , INKZ4, product-images/bag.jpg, R12000.00),"
+#
+#
+#
+# @app.route('/add', methods=['POST'])
+# def add_product_to_cart():
+#     cursor = None
+# 	try:
+# 		_quantity = int(request.form['quantity'])
+# 		_code = request.form['code']
+#
+# 		# validate the received values
+# 		if _quantity and _code and request.method == 'POST':
+# 			conn = sql.connect()
+# 			cursor = conn.cursor(sql.cursor.DictCursor)
+# 			cursor.execute("SELECT * FROM Product WHERE code=%s", _code)
+# 			row = cursor.fetchone()
+#
+# 			itemArray = { row['code'] : {'name' : row['name'], 'code' : row['code'], 'quantity' : _quantity, 'price' : row['price'], 'image' : row['image'], 'total_price': _quantity * row['price']}}
+#
+# 			all_total_price = 0
+# 			all_total_quantity = 0
+#
+# 			session.modified = True
+#
+#             if 'cart_item' in session:
+# 				if row['code'] in session['cart_item']:
+# 					for key, value in session['cart_item'].items():
+# 						if row['code'] == key:
+# 							#session.modified = True
+# 							#if session['cart_item'][key]['quantity'] is not None:
+# 							#	session['cart_item'][key]['quantity'] = 0
+# 							old_quantity = session['cart_item'][key]['quantity']
+# 							total_quantity = old_quantity + _quantity
+# 							session['cart_item'][key]['quantity'] = total_quantity
+# 							session['cart_item'][key]['total_price'] = total_quantity * row['price']
+#
+#                         else:
+#                             session['cart_item'] = array_merge(session['cart_item'], itemArray)
+#                             for key, value in session['cart_item'].items():
+#                                 individual_quantity = int(session['cart_item'][key]['quantity'])
+#                                 individual_price = float(session['cart_item'][key]['total_price'])
+#                                 all_total_quantity = all_total_quantity + individual_quantity
+#                                 all_total_price = all_total_price + individual_price
+#             else:
+#                 session['cart_item'] = itemArray
+#                 all_total_quantity = all_total_quantity + _quantity
+#                 all_total_price = all_total_price + _quantity * row['price']
+#
+#                 session['all_total_quantity'] = all_total_quantity
+#                 session['all_total_price'] = all_total_price
+#                 return redirect(url_for('.products'))
+#             else:
+#                 return 'Error while adding item to cart'
+#             except Exception as e:
+#                         print(e)
+#             finally:
+#                     cursor.close()
+# 		            conn.close()
+#
+# @app.route('/')
+# def products():
+# 	try:
+# 		conn = sql.connect()
+# 		cursor = conn.cursor(sql.cursor.DictCursor)
+# 		cursor.execute("SELECT * FROM product")
+# 		rows = cursor.fetchall()
+# 		return render_template('products.html', products=rows)
+# 	except Exception as e:
+# 		print(e)
+# 	finally:
+# 		cursor.close()
+# 		conn.close()
+#
+# @app.route('/empty')
+# def empty_cart():
+# 	try:
+# 		session.clear()
+# 		return redirect(url_for('.products'))
+# 	except Exception as e:
+# 		print(e)
+#
+# @app.route('/delete/<string:code>')
+# def delete_product(code):
+# 	try:
+# 		all_total_price = 0
+# 		all_total_quantity = 0
+# 		session.modified = True
+#
+# 		for item in session['cart_item'].items():
+# 			if item[0] == code:
+# 				session['cart_item'].pop(item[0], None)
+# 				if 'cart_item' in session:
+# 					for key, value in session['cart_item'].items():
+# 						individual_quantity = int(session['cart_item'][key]['quantity'])
+# 						individual_price = float(session['cart_item'][key]['total_price'])
+# 						all_total_quantity = all_total_quantity + individual_quantity
+# 						all_total_price = all_total_price + individual_price
+# 				break
+#
+# 		if all_total_quantity == 0:
+# 			session.clear()
+# 		else:
+# 			session['all_total_quantity'] = all_total_quantity
+# 			session['all_total_price'] = all_total_price
+#
+# 		#return redirect('/')
+# 		return redirect(url_for('.products'))
+# 	except Exception as e:
+# 		print(e)
+#
+# def array_merge( first_array , second_array ):
+# 	if isinstance( first_array , list ) and isinstance( second_array , list ):
+# 		return first_array + second_array
+# 	elif isinstance( first_array , dict ) and isinstance( second_array , dict ):
+# 		return dict( list( first_array.items() ) + list( second_array.items() ) )
+# 	elif isinstance( first_array , set ) and isinstance( second_array , set ):
+# 		return first_array.union( second_array )
+# 	return False
 
-    cur = con.cursor()
-    cur.execute('INSERT INTO Product (id,name, code, image, price) VALUES(1, Full Tattoo Kit, KITSET1, product-images/bag.jpg, R12000.00),
-                2, Tattoo Needles, NEEDLE2, product-images/bag.jpg, R12000.00),
-                3, Generators, GEN3, product-images/bag.jpg, R12000.00),
-                4, Ink , INKZ4, product-images/bag.jpg, R12000.00),
-
-
-
-@app.route('/add', methods=['POST'])
-def add_product_to_cart():
-    cursor = None
-	try:
-		_quantity = int(request.form['quantity'])
-		_code = request.form['code']
-
-		# validate the received values
-		if _quantity and _code and request.method == 'POST':
-			conn = sql.connect()
-			cursor = conn.cursor(sql.cursor.DictCursor)
-			cursor.execute("SELECT * FROM Product WHERE code=%s", _code)
-			row = cursor.fetchone()
-
-			itemArray = { row['code'] : {'name' : row['name'], 'code' : row['code'], 'quantity' : _quantity, 'price' : row['price'], 'image' : row['image'], 'total_price': _quantity * row['price']}}
-
-			all_total_price = 0
-			all_total_quantity = 0
-
-			session.modified = True
-
-            if 'cart_item' in session:
-				if row['code'] in session['cart_item']:
-					for key, value in session['cart_item'].items():
-						if row['code'] == key:
-							#session.modified = True
-							#if session['cart_item'][key]['quantity'] is not None:
-							#	session['cart_item'][key]['quantity'] = 0
-							old_quantity = session['cart_item'][key]['quantity']
-							total_quantity = old_quantity + _quantity
-							session['cart_item'][key]['quantity'] = total_quantity
-							session['cart_item'][key]['total_price'] = total_quantity * row['price']
-
-                        else:
-                            session['cart_item'] = array_merge(session['cart_item'], itemArray)
-                            for key, value in session['cart_item'].items():
-                                individual_quantity = int(session['cart_item'][key]['quantity'])
-                                individual_price = float(session['cart_item'][key]['total_price'])
-                                all_total_quantity = all_total_quantity + individual_quantity
-                                all_total_price = all_total_price + individual_price
-            else:
-                session['cart_item'] = itemArray
-                all_total_quantity = all_total_quantity + _quantity
-                all_total_price = all_total_price + _quantity * row['price']
-
-                session['all_total_quantity'] = all_total_quantity
-                session['all_total_price'] = all_total_price
-                return redirect(url_for('.products'))
-            else:
-                return 'Error while adding item to cart'
-            except Exception as e:
-                        print(e)
-            finally:
-                    cursor.close()
-		            conn.close()
-
-@app.route('/')
-def products():
-	try:
-		conn = sql.connect()
-		cursor = conn.cursor(sql.cursor.DictCursor)
-		cursor.execute("SELECT * FROM product")
-		rows = cursor.fetchall()
-		return render_template('products.html', products=rows)
-	except Exception as e:
-		print(e)
-	finally:
-		cursor.close()
-		conn.close()
-
-@app.route('/empty')
-def empty_cart():
-	try:
-		session.clear()
-		return redirect(url_for('.products'))
-	except Exception as e:
-		print(e)
-
-@app.route('/delete/<string:code>')
-def delete_product(code):
-	try:
-		all_total_price = 0
-		all_total_quantity = 0
-		session.modified = True
-
-		for item in session['cart_item'].items():
-			if item[0] == code:
-				session['cart_item'].pop(item[0], None)
-				if 'cart_item' in session:
-					for key, value in session['cart_item'].items():
-						individual_quantity = int(session['cart_item'][key]['quantity'])
-						individual_price = float(session['cart_item'][key]['total_price'])
-						all_total_quantity = all_total_quantity + individual_quantity
-						all_total_price = all_total_price + individual_price
-				break
-
-		if all_total_quantity == 0:
-			session.clear()
-		else:
-			session['all_total_quantity'] = all_total_quantity
-			session['all_total_price'] = all_total_price
-
-		#return redirect('/')
-		return redirect(url_for('.products'))
-	except Exception as e:
-		print(e)
-
-def array_merge( first_array , second_array ):
-	if isinstance( first_array , list ) and isinstance( second_array , list ):
-		return first_array + second_array
-	elif isinstance( first_array , dict ) and isinstance( second_array , dict ):
-		return dict( list( first_array.items() ) + list( second_array.items() ) )
-	elif isinstance( first_array , set ) and isinstance( second_array , set ):
-		return first_array.union( second_array )
-	return False
 if __name__ == '__main__':
     app.run(debug=True)
