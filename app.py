@@ -36,28 +36,6 @@ def dbase_tables():
     conn.close()
 #########################################################################################################################################################
 # FOR USER
-# Route for handling the login page logic for user
-@app.route('/userlogin' , methods=['POST','GET'])
-def adminlogin():
-    rqst_email = request.form[''] != ''
-    rqst_mobile=request.form[''] != ''
-
-    # success = None
-    if request.method == 'GET':
-            try:
-                with sql.connect('database.db') as connect:
-                    connect.row_factory = dict_factory
-                    cursor = connect.cursor()
-                    cursor.execute("SELECT FROM User WHERE adm_mail = '?' AND adm_pass = '?' "),()
-
-            except Exception as e:
-                    connect.rollback()
-                    print("There was a problem login in ")
-
-            else:
-                return redirect(url_for('file:///home/user/Desktop/FLASK_APP_front/user_login.html'))
-                # return jsonify(success)
-
 @app.route('/adduser/' , methods=['POST','GET'])
 def adduser():
     if request.method == 'POST':
@@ -81,6 +59,7 @@ def adduser():
 
         finally:
                 con.close()
+
 #check if user in database just by diplaying the data from database and checking if in\
 @app.route('/user_data/', methods=['GET'])
 def check_users():
@@ -91,10 +70,6 @@ def check_users():
         data = cursor.fetchall()
         print(data)
     return jsonify(data)
-
-
-
-
 
 
 # ADMINS ABILITY TO VIEW THE USERS THAT REGISTERED
@@ -123,53 +98,44 @@ def list():
 # ************************************************************************************************************************************************************
 # THIS WILL BE THE ADMIN SECTION
 # ADMIN
-@app.route('/addadmin/' , methods=['POST','GET'])
-def addadmin():
-    if request.method == 'POST':
+@app.route('/adduser/', methods=['POST'])
+def add_new_record():
+    if request.method == "POST":
+        msg = None
         try:
-            # post_data = request.get_json()
-            ad_nm = request.form['adm_name']
-            ad_surname = request.form['adm_surname']
-            ad_mail = request.form['adm_email']
-            ad_pass = request.form['adm_pass']
+            post_data = request.get_json()
+            name = post_data['name']
+            sur = post_data['surname']
+            email = post_data['email']
+            cont = post_data['contact']
+            data = name, sur, email, cont
+            print(data)
 
-            with sql.connect("database.db") as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO Admin (adm_name,adm_surname,adm_email,adm_pass) VALUES (?,?,?,?)", (ad_nm, ad_surname, ad_mail, ad_pass))
-                con.commit()
-                msg = "Admin successfully added"
-                return jsonify(msg)
+            con = sql.connect('database.db')
+            con.row_factory = dict_factory
+            cur = con.cursor()
+            cur.execute("INSERT INTO Users (name, surname, email, contact) VALUES (?, ?, ?, ?)", (name, sur, email, cont))
+            con.commit()
+            msg = "User "+name+" successfully added."
+            print(msg)
 
-        except:
+        except Exception as e:
                 con.rollback()
-                msg = "New Admin not added."
-                return jsonify(msg)
-
+                msg = "Error occurred in insert operation: " + e
         finally:
-                con.close()
+            con.close()
+            return jsonify(msg = msg)
 
-@app.route('/adlogin' , methods=['POST','GET'])
-def ad_login():
-    if request.method == 'GET':
-        try:
-            # post_data = request.get_json()
-            ad_mail = request.form['adm_email']
-            ad_pass = request.form['adm_pass']
-
-            with sql.connect("database.db") as con:
-                cur = con.cursor()
-                cur.execute("SELECT * from Admin WHERE adm_email = ? AND adm_pass = ?", (ad_mail, ad_pass))
-                con.commit()
-                msg = "Admin successfully logged in"
-                return jsonify(msg)
-
-        except:
-                con.rollback()
-                msg = "There was a problem logging into your account."
-                return jsonify(msg)
-
-        finally:
-                con.close()
+# CHECKING FOR THE ADMIN DATA
+@app.route('/admin_data/', methods=['GET'])
+def check_admin():
+    with sql.connect("database.db") as con:
+        con.row_factory= dict_factory
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM Admin")
+        data = cursor.fetchall()
+        print(data)
+    return jsonify(data)
 
 # ADMINS ABILITY TO VIEW THE ADMINS THAT THEY REGISTERED.
 @app.route('/adminlist')
