@@ -81,6 +81,21 @@ def adduser():
 
         finally:
                 con.close()
+#check if user in database just by diplaying the data from database and checking if in\
+@app.route('/user_data/', methods=['GET'])
+def check_users():
+    with sql.connect("database.db") as con:
+        con.row_factory= dict_factory
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM Users")
+        data = cursor.fetchall()
+        print(data)
+    return jsonify(data)
+
+
+
+
+
 
 # ADMINS ABILITY TO VIEW THE USERS THAT REGISTERED
 @app.route('/list')
