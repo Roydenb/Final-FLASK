@@ -21,7 +21,7 @@ def dbase_tables():
     print ("Table created successfully")
     conn.execute('CREATE TABLE IF NOT EXISTS Admin (adm_name TEXT, adm_surname TEXT, adm_email TEXT, adm_pass TEXT)')
     print ("Table created successfully")
-    conn.execute('CREATE TABLE IF NOT EXISTS Products (product_type, TEXT title TEXT, description TEXT, price TEXT, availability TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS Products (prod_type, TEXT title TEXT, description TEXT, price TEXT, availability TEXT)')
     print ("Table created successfully")
     conn.close()
 #########################################################################################################################################################
@@ -156,8 +156,8 @@ def add_new_admin():
 #         return jsonify(ad_list)
 # **********************************************************************************************************************************************************
 # TABLES FOR THE PRODUCT
-@app.route('/createproducts/')
-def createproducts():
+@app.route('/createprods/')
+def create():
     con= sql.connect('database.db')
     con.row_factory = dict_factory
     cur = con.cursor()
@@ -207,7 +207,7 @@ def createproducts():
     cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
 
     con.commit()
-
+create()
 
 @app.route('/proddata', methods=['GET'])
 def check_prod():
