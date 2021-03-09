@@ -1,11 +1,10 @@
-from flask import Flask, request,jsonify,redirect,url_for, session
+from flask import Flask, request,jsonify
 import sqlite3 as sql
 from flask_cors import CORS
 
 app = Flask(__name__)
 app.secret_key = "secret key"
 CORS(app)
-
 
 def dict_factory(cursor, row):
     d = {}
@@ -14,16 +13,17 @@ def dict_factory(cursor, row):
     return d
 
 def dbase_tables():
-    conn = sql.connect('database.db')
+    con = sql.connect('database.db')
     print ("Opened database successfully")
+    con.execute('CREATE TABLE IF NOT EXISTS Users (name TEXT, surname TEXT, email TEXT, contact TEXT)')
+    print ("Table created successfully")
+    con.execute('CREATE TABLE IF NOT EXISTS Admin (adm_name TEXT, adm_surname TEXT, adm_email TEXT, adm_pass TEXT)')
+    print ("Table created successfully")
+    con.execute('CREATE TABLE IF NOT EXISTS Products (prod_type TEXT, title TEXT, description TEXT, price TEXT, availability TEXT, image TEXT)')
+    print ("Table created successfully")
 
-    conn.execute('CREATE TABLE IF NOT EXISTS Users (name TEXT, surname TEXT, email TEXT, contact TEXT)')
-    print ("Table created successfully")
-    conn.execute('CREATE TABLE IF NOT EXISTS Admin (adm_name TEXT, adm_surname TEXT, adm_email TEXT, adm_pass TEXT)')
-    print ("Table created successfully")
-    conn.execute('CREATE TABLE IF NOT EXISTS Products (prod_type, TEXT title TEXT, description TEXT, price TEXT, availability TEXT)')
-    print ("Table created successfully")
-    conn.close()
+    con.close()
+dbase_tables()
 #########################################################################################################################################################
 # FOR USER
 #check if user in database just by diplaying the data from database and checking if in\
@@ -35,7 +35,7 @@ def check_users():
         cursor.execute("SELECT * FROM Users")
         data = cursor.fetchall()
         print(data)
-    return jsonify(data)
+        return jsonify(data)
 
 @app.route('/adduser/', methods=['POST'])
 def add_new_record():
@@ -101,7 +101,7 @@ def check_admin():
         cursor.execute("SELECT * FROM Admin")
         data = cursor.fetchall()
         print(data)
-    return jsonify(data)
+        return jsonify(data)
 
 @app.route('/addadmin/', methods=['POST'])
 def add_new_admin():
@@ -156,68 +156,39 @@ def add_new_admin():
 #         return jsonify(ad_list)
 # **********************************************************************************************************************************************************
 # TABLES FOR THE PRODUCT
-@app.route('/createprods/')
-def create():
-    con= sql.connect('database.db')
-    con.row_factory = dict_factory
-    cur = con.cursor()
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock'))
-
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Machines','me', 'Best', 'R1050.00', 'Out of Stock'))
-
-
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', ' Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type,title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Generators','me', 'Best', 'R1050.00', 'Available'))
-
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Out of Stock'))
-    cur.execute("INSERT INTO Products (product_type, title, description, price, availability) VALUES (?, ?, ?, ?,?)", ('Full kit','me', 'Best', 'R1050.00', 'Available'))
-
-    con.commit()
-create()
-
-@app.route('/proddata', methods=['GET'])
-def check_prod():
+@app.route('/viewprods/', methods=['GET'])
+def view_prod():
     with sql.connect("database.db") as con:
         con.row_factory= dict_factory
-        cursor = con.cursor()
-        cursor.execute("SELECT * FROM Products")
-        data = cursor.fetchall()
-        print(data)
-    return jsonify(data)
+        cur = con.cursor()
+        cur.execute("SELECT * FROM Products")
+        items = cur.fetchall()
+        print(items)
+        return jsonify(items)
+
+@app.route('/prods/', methods=['POST'])
+def create():
+    with sql.connect('database.db') as con:
+        con.row_factory = dict_factory
+        cur = con.cursor()
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Machine','Tattoo Machine', 'Best', 'R1000.00', 'Out of Stock','https://i.postimg.cc/mkcLSxcW/machine.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Machine','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Ink','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/qRmBnsGY/tattoo-kit2.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/mDqfB8jb/tattoo-kit3.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+
+        con.commit()
+
+        items = cur.fetchall()
+        # print(items)
+    return jsonify(items)
+
 
 # @app.route('/adminAddProd/', methods=['POST'])
 # def add_new_prod():
