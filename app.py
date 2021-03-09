@@ -25,6 +25,29 @@ def dbase_tables():
     con.close()
 dbase_tables()
 #########################################################################################################################################################
+def create():
+    with sql.connect('database.db') as con:
+        con.row_factory = dict_factory
+        cur = con.cursor()
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Best', 'R1000.00', 'Out of Stock','https://i.postimg.cc/mkcLSxcW/machine.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','me', 'Best', 'R1150.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','me', 'Best', 'R500.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','me', 'Best', 'R700.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','me', 'Best', 'R2500.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','me', 'Best', 'R150.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','me', 'Best', 'R2200.00', 'Out of Stock','https://i.postimg.cc/qRmBnsGY/tattoo-kit2.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','me', 'Best', 'R3000.00', 'Available','https://i.postimg.cc/mDqfB8jb/tattoo-kit3.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','me', 'Best', 'R900.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','me', 'Best', 'R1000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+
+        con.commit()
+
+        items = cur.fetchall()
+        print(items)
+        create()
+
+##############################################################################################################################################################################################################
 # FOR USER
 #check if user in database just by diplaying the data from database and checking if in\
 @app.route('/userdata/', methods=['GET'])
@@ -156,6 +179,10 @@ def add_new_admin():
 #         return jsonify(ad_list)
 # **********************************************************************************************************************************************************
 # TABLES FOR THE PRODUCT
+# @app.route('/prods/', methods=['POST'])
+# create products table
+
+
 @app.route('/viewprods/', methods=['GET'])
 def view_prod():
     with sql.connect("database.db") as con:
@@ -165,30 +192,6 @@ def view_prod():
         items = cur.fetchall()
         print(items)
         return jsonify(items)
-
-@app.route('/prods/', methods=['POST'])
-def create():
-    with sql.connect('database.db') as con:
-        con.row_factory = dict_factory
-        cur = con.cursor()
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Machine','Tattoo Machine', 'Best', 'R1000.00', 'Out of Stock','https://i.postimg.cc/mkcLSxcW/machine.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Machine','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Needles','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Ink','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/qRmBnsGY/tattoo-kit2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/mDqfB8jb/tattoo-kit3.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?)", ('Full Kit','me', 'Best', 'R1050.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-
-        con.commit()
-
-        items = cur.fetchall()
-        # print(items)
-    return jsonify(items)
-
 
 # @app.route('/adminAddProd/', methods=['POST'])
 # def add_new_prod():
