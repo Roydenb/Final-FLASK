@@ -99,29 +99,6 @@ def add_new_record():
             con.close()
             return jsonify(msg = msg)
 
-# ADMINS ABILITY TO VIEW THE USERS THAT REGISTERED
-# @app.route('/list')
-# def list():
-#     con = sql.connect("database.db")
-#     con.row_factory = sql.Row
-#
-#     cur = con.cursor()
-#     cur.execute("Select * from Users")
-#
-#     users_list = []
-#     try:
-#         with sql.connect('database.db') as connect:
-#             connect.row_factory = dict_factory
-#             cursor = connect.cursor()
-#             cursor.execute("SELECT * FROM Users")
-#             users_list = cursor.fetchall()
-#     except Exception as e:
-#             connect.rollback()
-#             print("There was an error fetching User results from the database: " + str(e))
-#     finally:
-#         connect.close()
-#         return jsonify(users_list)
-
 # ************************************************************************************************************************************************************
 # THIS WILL BE THE ADMIN SECTION
 # ADMIN
@@ -163,29 +140,6 @@ def add_new_admin():
         finally:
             con.close()
             return jsonify(msg = msg)
-
-# ADMINS ABILITY TO VIEW THE ADMINS THAT THEY REGISTERED.
-# @app.route('/adminlist/')
-# def adminlist():
-#     con = sql.connect("database.db")
-#
-#     cur = con.cursor()
-#     cur.execute("Select * from Admin")
-#
-#     ad_list= []
-#
-#     try:
-#         with sql.connect('database.db') as connect:
-#             connect.row_factory = dict_factory
-#             cursor = connect.cursor()
-#             cursor.execute("SELECT * FROM Admin")
-#             ad_list = cursor.fetchall()
-#     except Exception as e:
-#             connect.rollback()
-#             print("There was an error fetching Admin results from the database: " + str(e))
-#     finally:
-#         connect.close()
-#         return jsonify(ad_list)
 # **********************************************************************************************************************************************************
 # TABLES FOR THE PRODUCT
 # @app.route('/prods/', methods=['POST'])
