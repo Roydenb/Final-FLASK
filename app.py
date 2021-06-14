@@ -19,7 +19,7 @@ def dbase_tables():
     print ("Table created successfully")
     con.execute('CREATE TABLE IF NOT EXISTS Admin (adm_name TEXT, adm_surname TEXT, adm_email TEXT, adm_pass TEXT)')
     print ("Table created successfully")
-    con.execute('CREATE TABLE IF NOT EXISTS Products (prod_type TEXT, title TEXT, description TEXT, price TEXT, availability TEXT, image TEXT)')
+    con.execute('CREATE TABLE IF NOT EXISTS Products (id INTEGER PRIMARY KEY AUTOINCREMENT, prod_type TEXT, title TEXT, description TEXT, price TEXT, availability TEXT, image TEXT)')
     print ("Table created successfully")
 
     con.close()
@@ -29,29 +29,32 @@ def create():
     with sql.connect('database.db') as con:
         con.row_factory = dict_factory
         cur = con.cursor()
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1000.00', 'Out of Stock','https://i.postimg.cc/mkcLSxcW/machine.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1150.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R500.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R700.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R2500.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        # FIRST ROW OF ITEMS
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1000.00', 'Out of Stock','https://i.postimg.cc/mkcLSxcW/machine.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1150.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R500.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R700.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Full Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R2500.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
 
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R150.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R2200.00', 'Out of Stock','https://i.postimg.cc/qRmBnsGY/tattoo-kit2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R500.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R900.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R100.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        # SECOND ROW OF ITEMS
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R150.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R2200.00', 'Out of Stock','https://i.postimg.cc/qRmBnsGY/tattoo-kit2.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R500.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R900.00', 'Out of Stock','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R100.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
 
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Out of Stock','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R4000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R150.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R200.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text.', 'R550.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1150.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
-        cur.execute("INSERT INTO Products (prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        # THE LAST ROW OF ITEMS
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Out of Stock','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R4000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R150.00', 'Available','https://i.postimg.cc/6qRSwwT0/needles3.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Ink','Tattoo Ink', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R200.00', 'Out of Stock','https://i.postimg.cc/D0jWvVDS/tat-equip2.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R300.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Needles','Tattoo Needles', 'Lorem Ipsum is simply dummy text.', 'R550.00', 'Out of Stock','https://i.postimg.cc/Zq7XxV1r/needles1.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Machine','Tattoo Machine', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 'R1150.00', 'Out of Stock','https://i.postimg.cc/X7C1yVjc/machine-power.jpg'))
+        cur.execute("INSERT INTO Products (id, prod_type, title, description, price, availability, image) VALUES (?, ?, ?, ?,?,?)", ('Kit','Tattoo Kit', 'Lorem Ipsum is simply .', 'R5000.00', 'Available','https://i.postimg.cc/8C0n6s64/tat-equip1.jpg'))
 
         con.commit()
 
@@ -155,35 +158,6 @@ def view_prod():
         items = cur.fetchall()
         print(items)
         return jsonify(items)
-
-# @app.route('/adminAddProd/', methods=['POST'])
-# def add_new_prod():
-#     if request.method == "POST":
-#         msg = None
-#         try:
-#             post_data = request.get_json()
-#             prod_name = post_data['title']
-#             prod_descrip = post_data['description']
-#             price = post_data['price']
-#             avail = post_data['availability']
-#             data = prod_name, prod_descrip, price, avail
-#             print(data)
-#
-#             with sql.connect('database.db') as con:
-#                 con.row_factory = dict_factory
-#                 cur = con.cursor()
-#                 cur.execute("INSERT INTO Products (title, description, price, availability) VALUES (?, ?, ?, ?)", (prod_name, prod_descrip, price, avail))
-#                 con.commit()
-#                 msg = " The "+prod_name+" product have successfully been added."
-#                 print(msg)
-#
-#         except Exception as e:
-#                 con.rollback()
-#                 msg = "Problem updating the new product: " + str(e)
-#         finally:
-#             con.close()
-#             return jsonify(msg = msg)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
