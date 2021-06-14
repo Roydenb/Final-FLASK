@@ -60,7 +60,7 @@ def create():
 
         items = cur.fetchall()
         print(items)
-create()
+        create()
 ##############################################################################################################################################################################################################
 # FOR USER
 #check if user in database just by diplaying the data from database and checking if in\
